@@ -3,7 +3,4 @@
 * Install NODE => npm install
 * Create a database => task_app
 * Run migrations => php artisan migrate
-###Ready to use.
-=======
-
-
+* ###Ready to use.
