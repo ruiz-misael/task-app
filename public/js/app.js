@@ -5308,15 +5308,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       tareas: [],
       tarea: {
         nombre: "",
-        descripcion: ""
+        descripcion: "",
+        fecha: ""
       }
     };
+  },
+  methods: {
+    agregar: function agregar() {
+      if (this.tarea.nombre.trim() === "" || this.tarea.descripcion.trim() === "" || this.tarea.fecha.trim() === "") {
+        alert("Debe completar todos los campos");
+        return;
+      }
+
+      console.log(this.tarea.nombre, this.tarea.descripcion, this.tarea.fecha);
+      var params = {
+        nombre: this.tarea.nombre,
+        descripcion: this.tarea.descripcion,
+        fecha: this.tarea.fecha
+      };
+      axios.post('notas_store');
+    }
   }
 });
 
@@ -28029,36 +28047,99 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h3", [_vm._v("Agregar Tareas")]),
-      _vm._v(" "),
-      _c("form", [
+  return _c("div", [
+    _c("h3", { staticClass: "text-primary" }, [_vm._v("AGREGAR TAREAS")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        on: {
+          submit: function ($event) {
+            $event.preventDefault()
+            return _vm.agregar.apply(null, arguments)
+          },
+        },
+      },
+      [
         _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.tarea.nombre,
+              expression: "tarea.nombre",
+            },
+          ],
           staticClass: "form-control mb-2",
           attrs: { type: "text", placeholder: "Nombre" },
+          domProps: { value: _vm.tarea.nombre },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.tarea, "nombre", $event.target.value)
+            },
+          },
         }),
         _vm._v(" "),
         _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.tarea.descripcion,
+              expression: "tarea.descripcion",
+            },
+          ],
           staticClass: "form-control mb-2",
           attrs: { type: "text", placeholder: "Descripcion" },
+          domProps: { value: _vm.tarea.descripcion },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.tarea, "descripcion", $event.target.value)
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.tarea.fecha,
+              expression: "tarea.fecha",
+            },
+          ],
+          staticClass: "form-control mb-2",
+          attrs: { type: "date", placeholder: "Fecha" },
+          domProps: { value: _vm.tarea.fecha },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.tarea, "fecha", $event.target.value)
+            },
+          },
         }),
         _vm._v(" "),
         _c(
           "button",
-          { staticClass: "btn btn-info pul-right", attrs: { type: "submit" } },
+          {
+            staticClass: "btn btn-sm btn-primary pul-right",
+            attrs: { type: "submit" },
+          },
           [_vm._v("Agregar")]
         ),
-      ]),
-    ])
-  },
-]
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

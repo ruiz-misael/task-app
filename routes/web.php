@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('notas',[App\Http\Controllers\NotaController::class, 'index']);
+
+Route::post('notas_store',[App\Http\Controllers\NotaController::class, 'store']);

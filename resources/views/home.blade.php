@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Administrar Notas</div>
+                <div class="card-header bg-primary text-white">ADMINISTRAR NOTAS</div>
 
                 <div class="card-body">
                   <tareas></tareas>
