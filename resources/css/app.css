@@ -1,4 +1,3 @@
-
-	.card:{
-		border: 1px groove white ;
-	}
+.bagdes{
+	border-radius:50% !important;
+}

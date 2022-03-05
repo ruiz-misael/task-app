@@ -13,7 +13,7 @@ class CreateNotasTable extends Migration
      */
     public function up()
     {
-        Schema::create('notas', function (Blueprint $table) {
+        Schema::create('tareas', function (Blueprint $table) {
 
             $table->id();
             $table->string('nombre');

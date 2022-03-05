@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Notas;
-class NotaController extends Controller
+use App\Models\Tareas;
+
+class TareasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +20,7 @@ class NotaController extends Controller
     {
         
         if($request->ajax()){
-            return Notas::where('user_id',auth()->id())->get();
+            return Tareas::where('user_id',auth()->id())->get();
         }else{
             return view('home');
 
@@ -44,10 +45,12 @@ class NotaController extends Controller
      */
     public function store(Request $request)
     {
-        $nota= new Nota();
+        $nota= new Tareas();
         $nota->nombre = $request->nombre;
         $nota->descripcion = $request->descripcion;
-        $nota->úser_id = auth()->id();
+        $nota->fecha=$request->fecha;
+        $nota->estatus=1;
+        $nota->user_id = auth()->id();
         $nota->save();
 
         return $nota;
@@ -84,8 +87,9 @@ class NotaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nota= Nota::findOrFail($id);
+        $nota= Tareas::findOrFail($id);
         $nota->nombre = $request->nombre;
+           $nota->fecha=$request->fecha;
         $nota->descripcion = $request->descripcion;
         $nota->úser_id = auth()->id();
         $nota->save();
@@ -102,7 +106,7 @@ class NotaController extends Controller
      */
     public function destroy($id)
     {
-        $nota= Nota::find($id);
+        $nota= Tareas::find($id);
         $nota->delete();
     }
 }

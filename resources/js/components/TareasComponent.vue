@@ -5,18 +5,56 @@
 			<input type="text" placeholder="Nombre" v-model="tarea.nombre" class="form-control mb-2">
 			<input type="text" placeholder="Descripcion" v-model="tarea.descripcion" class="form-control mb-2">
 			<input type="date" placeholder="Fecha" v-model="tarea.fecha" class="form-control mb-2">
-			<button class="btn btn-sm btn-primary pul-right" type="submit">Agregar</button>
+			<button class="btn  btn-primary float-fight" type="submit">Agregar</button>
 		</form>
+		<br>
+		<hr class="my-3" style="border:1px solid #0D6EFD;">
+		<h3 class="text-primary" v-if="tareas">TAREAS PENDIENTES</h3>
+		<ul class="list-group" style="border:1px solid #0D6EFD;" v-if="tareas">
+			<li v-for="(item, index) in tareas"  class="list-group-item">
+				<div class="d-flex justify-content-between">
+					<div class="col-lg-10"><h4>{{ item.nombre }}</h4>
+						<i> {{moment(item.fecha).format('dddd, Do MMMM YYYY')}}</i>
+
+					</div>
+					<div class="col-lg-2">
+						<span  v-if=" item.estatus == 1" class=" badges p-1 text-warning float-fight" style="border-radius:5px;">PENDIENTE</span>
+						<span v-else class=" badges text-primary p-1 text-white float-fight" style="border-radius:5px;">REALIZADA</span>		
+					</div>
+				</div>
+				<div class="d-flex justify-content-between">
+					
+					<div class="col-lg-12">{{ item.descripcion }}</div>
+				</div>
+				<div class="d-flex justify-content-between">
+					<div class="col-lg-9"><button class="btn  btn-primary" type="submit">Finalizar</button></div>
+					<div class="col-lg-4" >
+						<button class="btn  btn-info float-fight" 
+						@click="editarNota(index,item.id)"type="submit">Editar</button>
+						<button class="btn  btn-danger float-fight" type="submit"
+						@click="eliminarTarea(index,item.id)">Eliminar</button>
+					</div>
+				</div>
+			</li>
+		</ul>
 	</div>
 </template>
 
 <script>
 	export default{
 		data(){
+
 			return{
 				tareas:[],
-				tarea:{nombre:"",descripcion:"",fecha:""}
+				tarea:{nombre:"",descripcion:"",fecha:""},
+				 time: new Date()
 			}
+		},
+		created(){
+			axios.get('tareas').then(response=>{
+					this.tareas=response.data;
+				});
+
 		},
 		methods:{
 			agregar(){
@@ -27,15 +65,34 @@
 					alert("Debe completar todos los campos");
 					return;
 				}
-				
-				console.log(this.tarea.nombre,this.tarea.descripcion,this.tarea.fecha);
+
+				// console.log(this.tarea.nombre,this.tarea.descripcion,this.tarea.fecha);
 		const params={
 			nombre:this.tarea.nombre,
 			descripcion:this.tarea.descripcion,
 			fecha:this.tarea.fecha
 		}
-				axios.post('notas_store',)
-			}
+
+		this.tarea.nombre="";
+		this.tarea.descripcion="";
+		this.tarea.fecha="";
+
+				axios.post('tareas_store',params)
+				.then(response=>{
+					this.tareas.push(response.data);
+				});
+			},
+		eliminarTarea(index,id){
+
+
+				axios.get('tareas_delete/'+id)
+				.then(()=>{
+					this.tareas.splice(index,1);
+				});
+			
+			console.log(index,id)
 		}
+
+		}	
 	}
 </script>

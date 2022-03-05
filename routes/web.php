@@ -19,8 +19,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\TareasController::class, 'index'])->name('home');
 
-Route::get('notas',[App\Http\Controllers\NotaController::class, 'index']);
+Route::get('tareas',[App\Http\Controllers\TareasController::class, 'index']);
 
-Route::post('notas_store',[App\Http\Controllers\NotaController::class, 'store']);
+Route::post('tareas_store',[App\Http\Controllers\TareasController::class, 'store'])->name('notas_store');
+Route::get('tareas_delete/{id}',[App\Http\Controllers\TareasController::class, 'destroy']);
