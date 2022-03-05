@@ -5413,6 +5413,7 @@ __webpack_require__.r(__webpack_exports__);
         _this3.tarea.descripcion = "";
         _this3.tarea.fecha = "";
       });
+      this.edicionTarea = false;
     },
     eliminarTarea: function eliminarTarea(index, item) {
       var _this4 = this;

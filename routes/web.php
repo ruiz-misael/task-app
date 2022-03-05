@@ -27,4 +27,4 @@ Route::post('tareas_store',[App\Http\Controllers\TareasController::class, 'store
 Route::get('tareas_delete/{id}',[App\Http\Controllers\TareasController::class, 'destroy']);
 
 Route::post('tareas_update/{id}',[App\Http\Controllers\TareasController::class, 'update'])->name('tareas_update');
-Rpute::get('tarea_finish/{id}',,[App\Http\Controllers\TareasController::class, 'finished']);
+Route::get('tarea_finish/{id}',[App\Http\Controllers\TareasController::class, 'finished']);

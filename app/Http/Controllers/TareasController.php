@@ -114,6 +114,7 @@ class TareasController extends Controller
     }
 
     public function finished($id){
+        
         $tarea= Tareas::findOrFail($id);
         $tarea->estatus = 0;
         $tarea->save();

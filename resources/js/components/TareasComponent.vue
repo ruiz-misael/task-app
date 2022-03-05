@@ -113,7 +113,7 @@
 	
 		axios.post('tareas_update/'+item.id,datos)
 
-				.then(response=>{	
+				.then(response=>{
 
 			this.tareas=response.data;	
 			this.tarea.nombre="";
@@ -122,8 +122,9 @@
 					
 				});
 			
-				
-				
+		
+
+				this.edicionTarea=false;
 				
 			},
 
