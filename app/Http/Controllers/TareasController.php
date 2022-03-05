@@ -45,15 +45,15 @@ class TareasController extends Controller
      */
     public function store(Request $request)
     {
-        $nota= new Tareas();
-        $nota->nombre = $request->nombre;
-        $nota->descripcion = $request->descripcion;
-        $nota->fecha=$request->fecha;
-        $nota->estatus=1;
-        $nota->user_id = auth()->id();
-        $nota->save();
+        $tarea= new Tareas();
+        $tarea->nombre = $request->nombre;
+        $tarea->descripcion = $request->descripcion;
+        $tarea->fecha=$request->fecha;
+        $tarea->estatus=1;
+        $tarea->user_id = auth()->id();
+        $tarea->save();
 
-        return $nota;
+        return $tarea;
     }
 
     /**
@@ -87,15 +87,18 @@ class TareasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $nota= Tareas::findOrFail($id);
-        $nota->nombre = $request->nombre;
-           $nota->fecha=$request->fecha;
-        $nota->descripcion = $request->descripcion;
-        $nota->úser_id = auth()->id();
-        $nota->save();
+
+        $tarea= Tareas::findOrFail($id);
+        $tarea->nombre = $request->nombre;
+        $tarea->fecha=$request->fecha;
+        $tarea->descripcion = $request->descripcion;
+        $tarea->user_id = auth()->id();
+        $tarea->save();
+
+        return Tareas::where('user_id',auth()->id())->get();
 
 
-        return $nota;
+        
     }
 
     /**
@@ -106,7 +109,13 @@ class TareasController extends Controller
      */
     public function destroy($id)
     {
-        $nota= Tareas::find($id);
-        $nota->delete();
+        $tarea= Tareas::find($id);
+        $tarea->delete();
+    }
+
+    public function finished($id){
+        $tarea= Tareas::findOrFail($id);
+        $tarea->estatus = 0;
+        $tarea->save();
     }
 }

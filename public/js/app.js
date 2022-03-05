@@ -5339,6 +5339,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5346,9 +5354,12 @@ __webpack_require__.r(__webpack_exports__);
       tarea: {
         nombre: "",
         descripcion: "",
-        fecha: ""
+        fecha: "",
+        id: "",
+        index: ""
       },
-      time: new Date()
+      time: new Date(),
+      edicionTarea: false
     };
   },
   created: function created() {
@@ -5380,13 +5391,35 @@ __webpack_require__.r(__webpack_exports__);
         _this2.tareas.push(response.data);
       });
     },
-    eliminarTarea: function eliminarTarea(index, id) {
+    editarTarea: function editarTarea(index, item) {
+      this.edicionTarea = true;
+      this.tarea.nombre = item.nombre;
+      this.tarea.descripcion = item.descripcion;
+      this.tarea.fecha = item.fecha;
+      this.tarea.id = item.id;
+      this.index = index;
+    },
+    actualizar: function actualizar(item) {
       var _this3 = this;
 
-      axios.get('tareas_delete/' + id).then(function () {
-        _this3.tareas.splice(index, 1);
+      var datos = {
+        nombre: this.tarea.nombre,
+        descripcion: this.tarea.descripcion,
+        fecha: this.tarea.fecha
+      };
+      axios.post('tareas_update/' + item.id, datos).then(function (response) {
+        _this3.tareas = response.data;
+        _this3.tarea.nombre = "";
+        _this3.tarea.descripcion = "";
+        _this3.tarea.fecha = "";
       });
-      console.log(index, id);
+    },
+    eliminarTarea: function eliminarTarea(index, item) {
+      var _this4 = this;
+
+      axios.get('/tareas_delete/' + item.id).then(function () {
+        _this4.tareas.splice(index, 1);
+      });
     }
   }
 });
@@ -49545,95 +49578,185 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("h3", { staticClass: "text-primary" }, [_vm._v("AGREGAR TAREAS")]),
+    _vm.edicionTarea
+      ? _c("h3", { staticClass: "text-primary" }, [_vm._v("EDITAR TAREAS")])
+      : _c("h3", { staticClass: "text-primary" }, [_vm._v("AGREGAR TAREAS")]),
     _vm._v(" "),
-    _c(
-      "form",
-      {
-        on: {
-          submit: function ($event) {
-            $event.preventDefault()
-            return _vm.agregar.apply(null, arguments)
-          },
-        },
-      },
-      [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.tarea.nombre,
-              expression: "tarea.nombre",
-            },
-          ],
-          staticClass: "form-control mb-2",
-          attrs: { type: "text", placeholder: "Nombre" },
-          domProps: { value: _vm.tarea.nombre },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.tarea, "nombre", $event.target.value)
-            },
-          },
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.tarea.descripcion,
-              expression: "tarea.descripcion",
-            },
-          ],
-          staticClass: "form-control mb-2",
-          attrs: { type: "text", placeholder: "Descripcion" },
-          domProps: { value: _vm.tarea.descripcion },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.tarea, "descripcion", $event.target.value)
-            },
-          },
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.tarea.fecha,
-              expression: "tarea.fecha",
-            },
-          ],
-          staticClass: "form-control mb-2",
-          attrs: { type: "date", placeholder: "Fecha" },
-          domProps: { value: _vm.tarea.fecha },
-          on: {
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.tarea, "fecha", $event.target.value)
-            },
-          },
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
+    _vm.edicionTarea
+      ? _c(
+          "form",
           {
-            staticClass: "btn  btn-primary float-fight",
-            attrs: { type: "submit" },
+            on: {
+              submit: function ($event) {
+                $event.preventDefault()
+                return _vm.actualizar(_vm.tarea)
+              },
+            },
           },
-          [_vm._v("Agregar")]
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tarea.nombre,
+                  expression: "tarea.nombre",
+                },
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Nombre" },
+              domProps: { value: _vm.tarea.nombre },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.tarea, "nombre", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tarea.descripcion,
+                  expression: "tarea.descripcion",
+                },
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Descripcion" },
+              domProps: { value: _vm.tarea.descripcion },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.tarea, "descripcion", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tarea.fecha,
+                  expression: "tarea.fecha",
+                },
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "date", placeholder: "Fecha" },
+              domProps: { value: _vm.tarea.fecha },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.tarea, "fecha", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn  btn-primary float-fight",
+                attrs: { type: "submit" },
+              },
+              [_vm._v("Guardar")]
+            ),
+          ]
+        )
+      : _c(
+          "form",
+          {
+            on: {
+              submit: function ($event) {
+                $event.preventDefault()
+                return _vm.agregar.apply(null, arguments)
+              },
+            },
+          },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tarea.nombre,
+                  expression: "tarea.nombre",
+                },
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Nombre" },
+              domProps: { value: _vm.tarea.nombre },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.tarea, "nombre", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tarea.descripcion,
+                  expression: "tarea.descripcion",
+                },
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "text", placeholder: "Descripcion" },
+              domProps: { value: _vm.tarea.descripcion },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.tarea, "descripcion", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.tarea.fecha,
+                  expression: "tarea.fecha",
+                },
+              ],
+              staticClass: "form-control mb-2",
+              attrs: { type: "date", placeholder: "Fecha" },
+              domProps: { value: _vm.tarea.fecha },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.tarea, "fecha", $event.target.value)
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn  btn-primary float-fight",
+                attrs: { type: "submit" },
+              },
+              [_vm._v("Agregar")]
+            ),
+          ]
         ),
-      ]
-    ),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
@@ -49698,7 +49821,21 @@ var render = function () {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "d-flex justify-content-between" }, [
-                _vm._m(0, true),
+                _c("div", { staticClass: "col-lg-9" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn  btn-primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.finalizarTarea(index, item)
+                        },
+                      },
+                    },
+                    [_vm._v("Finalizar")]
+                  ),
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-lg-4" }, [
                   _c(
@@ -49708,7 +49845,7 @@ var render = function () {
                       attrs: { type: "submit" },
                       on: {
                         click: function ($event) {
-                          return _vm.editarNota(index, item.id)
+                          return _vm.editarTarea(index, item)
                         },
                       },
                     },
@@ -49722,7 +49859,7 @@ var render = function () {
                       attrs: { type: "submit" },
                       on: {
                         click: function ($event) {
-                          return _vm.eliminarTarea(index, item.id)
+                          return _vm.eliminarTarea(index, item)
                         },
                       },
                     },
@@ -49737,20 +49874,7 @@ var render = function () {
       : _vm._e(),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-9" }, [
-      _c(
-        "button",
-        { staticClass: "btn  btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Finalizar")]
-      ),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

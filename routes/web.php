@@ -23,5 +23,8 @@ Route::get('/home', [App\Http\Controllers\TareasController::class, 'index'])->na
 
 Route::get('tareas',[App\Http\Controllers\TareasController::class, 'index']);
 
-Route::post('tareas_store',[App\Http\Controllers\TareasController::class, 'store'])->name('notas_store');
+Route::post('tareas_store',[App\Http\Controllers\TareasController::class, 'store'])->name('tareas_store');
 Route::get('tareas_delete/{id}',[App\Http\Controllers\TareasController::class, 'destroy']);
+
+Route::post('tareas_update/{id}',[App\Http\Controllers\TareasController::class, 'update'])->name('tareas_update');
+Rpute::get('tarea_finish/{id}',,[App\Http\Controllers\TareasController::class, 'finished']);

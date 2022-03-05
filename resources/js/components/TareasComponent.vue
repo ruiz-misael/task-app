@@ -1,7 +1,15 @@
 <template>
 	<div>
-		<h3 class="text-primary">AGREGAR TAREAS</h3>
-		<form @submit.prevent="agregar">
+		<h3 class="text-primary" v-if="edicionTarea">EDITAR TAREAS</h3>
+		<h3 class="text-primary" v-else="edicionTarea">AGREGAR TAREAS</h3>
+		<form @submit.prevent="actualizar(tarea)" v-if="edicionTarea">
+			<input type="text" placeholder="Nombre" v-model="tarea.nombre" class="form-control mb-2">
+			<input type="text" placeholder="Descripcion" v-model="tarea.descripcion" class="form-control mb-2">
+			<input type="date" placeholder="Fecha" v-model="tarea.fecha" class="form-control mb-2">
+			<button class="btn  btn-primary float-fight" type="submit">Guardar</button>
+		</form>
+
+		<form @submit.prevent="agregar" v-else>
 			<input type="text" placeholder="Nombre" v-model="tarea.nombre" class="form-control mb-2">
 			<input type="text" placeholder="Descripcion" v-model="tarea.descripcion" class="form-control mb-2">
 			<input type="date" placeholder="Fecha" v-model="tarea.fecha" class="form-control mb-2">
@@ -27,12 +35,12 @@
 					<div class="col-lg-12">{{ item.descripcion }}</div>
 				</div>
 				<div class="d-flex justify-content-between">
-					<div class="col-lg-9"><button class="btn  btn-primary" type="submit">Finalizar</button></div>
+					<div class="col-lg-9"><button class="btn  btn-primary" type="submit" @click="finalizarTarea(index,item)">Finalizar</button></div>
 					<div class="col-lg-4" >
 						<button class="btn  btn-info float-fight" 
-						@click="editarNota(index,item.id)"type="submit">Editar</button>
+						@click="editarTarea(index,item)"type="submit">Editar</button>
 						<button class="btn  btn-danger float-fight" type="submit"
-						@click="eliminarTarea(index,item.id)">Eliminar</button>
+						@click="eliminarTarea(index,item)">Eliminar</button>
 					</div>
 				</div>
 			</li>
@@ -46,8 +54,9 @@
 
 			return{
 				tareas:[],
-				tarea:{nombre:"",descripcion:"",fecha:""},
-				 time: new Date()
+				tarea:{nombre:"",descripcion:"",fecha:"",id:"",index:""},
+				 time: new Date(),
+				 edicionTarea: false
 			}
 		},
 		created(){
@@ -82,15 +91,51 @@
 					this.tareas.push(response.data);
 				});
 			},
-		eliminarTarea(index,id){
+			editarTarea(index,item){
 
+				this.edicionTarea=true;
+				this.tarea.nombre=item.nombre;
+		this.tarea.descripcion=item.descripcion;
+		this.tarea.fecha=item.fecha;
+		this.tarea.id=item.id;
+		this.index=index;
 
-				axios.get('tareas_delete/'+id)
+		
+	
+
+			},actualizar(item){
+				var datos={
+			nombre:this.tarea.nombre,
+			descripcion:this.tarea.descripcion,
+			fecha:this.tarea.fecha
+		}
+
+	
+		axios.post('tareas_update/'+item.id,datos)
+
+				.then(response=>{	
+
+			this.tareas=response.data;	
+			this.tarea.nombre="";
+		this.tarea.descripcion="";
+		this.tarea.fecha="";		
+					
+				});
+			
+				
+				
+				
+			},
+
+		eliminarTarea(index, item){
+	
+
+				axios.get('/tareas_delete/'+item.id)
 				.then(()=>{
 					this.tareas.splice(index,1);
 				});
 			
-			console.log(index,id)
+			
 		}
 
 		}	
