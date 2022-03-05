@@ -1,9 +1,9 @@
-<<<<<<< HEAD
-### Task App Vue & Laravel
-* clone
-* Create DB = task_app
-* npm i
-* and run! 
+### Task App Laravel & VUE
+* Clone the repository
+* Install NODE => npm install
+* Create a database => task_app
+* Run migrations => php artisan migrate
+###Ready to use.
 =======
 
->>>>>>> ab0ac8cda2cfd9d92a7cffadf59d259a6c580028
+
